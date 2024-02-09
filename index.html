@@ -1,0 +1,131 @@
+<!doctype html>
+<meta name="viewport" content="width = device-width, initial-scale = 1.0">
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Valentine</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        container: {
+          center: true,
+        },
+      },
+    }
+  </script>
+  <script>
+    window.addEventListener("load", (e) => {
+      var said_yes = false;
+
+      var brd = document.createElement("DIV");
+      document.body.insertBefore(brd, document.getElementById("board"));
+      const duration = 3000;
+      const speed = 0.5;
+      const cursorXOffset = 0;
+      const cursorYOffset = -5;
+      var hearts = [];
+      function generateHeart(x, y, xBound, xStart, scale) {
+        var heart = document.createElement("DIV");
+        heart.setAttribute('class', 'heart');
+        brd.appendChild(heart);
+        heart.time = duration;
+        heart.x = x;
+        heart.y = y;
+        heart.style.left = heart.x + "px";
+        heart.style.top = heart.y + "px";
+        hearts.splice(0, 0, heart);
+        return heart;
+      }
+
+      function getRandom(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+
+      const title = document.getElementById('title');
+
+      const yes_btn = document.getElementById('yes');
+      const no_btn = document.getElementById('no');
+
+      function onclickYes(e) {
+        title.innerText = "YAY!!!!!!!!!!!!!!!!";
+        said_yes = true;
+        const loveyou = document.getElementById('love');
+        const buttons = document.getElementById('buttons');
+        loveyou.classList.remove("invisible");
+        buttons.classList.add("invisible");
+      }
+
+      // clicked YES
+      yes_btn.addEventListener("click", onclickYes);
+
+      // clicked NO
+      no_btn.addEventListener("click", (e) => {
+        // convert the button into a YES!
+        const clone = yes_btn.cloneNode(true);
+        no_btn.replaceWith(clone);
+        clone.addEventListener("click", onclickYes)
+      });
+
+      function makeRandomHeart() {
+        if (!said_yes) {
+          return;
+        }
+        const x = getRandom(0, window.innerWidth);
+        const y = getRandom(0, window.innerHeight);
+        generateHeart(x, y, null, null, 1);
+      }
+
+      const TTNH = 400;
+
+      setInterval(makeRandomHeart, TTNH);
+
+      setTimeout(() => { setInterval(clearHearts, TTNH) }, TTNH * 10);
+
+      function clearHearts() {
+        const el = hearts.pop();
+        el.remove();
+      }
+    });
+  </script>
+</head>
+
+<body>
+  <div class="h-screen flex items-center justify-center">
+    <div class="columns-1 space-y-4">
+      <div>
+        <h1 id="title" class="no-select text-5xl font-medium text-pretty text-center">
+          Will you be my valentine?
+        </h1>
+      </div>
+
+      <div id="buttons" class="flex items-center justify-center space-x-8">
+        <button id="yes" class="bg-pink-400 hover:bg-pink-500 rounded-lg px-5 py-2.5 text-center me-2 mb-2">
+          <h1 class="no-select text-3xl">yes</h1>
+        </button>
+        <button id="no" class="bg-red-500 hover:bg-red-600 rounded-lg px-5 py-2.5 text-center me-2 mb-2">
+          <h1 class="no-select text-3xl">no</h1>
+        </button>
+
+      </div>
+
+      <div>
+        <h1 id="love" class="invisible no-select text-5xl font-medium text-pretty text-center">
+          Love you!!
+        </h1>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>
